@@ -122,32 +122,6 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 		}
 	}
 
-	function y(e, a) {
-		return function(e) {
-			if (Array.isArray(e)) return e
-		}(e) || function(e, a) {
-			var s = null == e ? null : "undefined" != typeof Symbol && e[Symbol.iterator] || e["@@iterator"];
-			if (null == s) return;
-			var t, o, n = [],
-				r = !0,
-				i = !1;
-			try {
-				for (s = s.call(e); !(r = (t = s.next()).done) && (n.push(t.value), !a || n.length !== a); r = !0);
-			} catch (e) {
-				i = !0, o = e
-			} finally {
-				try {
-					r || null == s.return || s.return()
-				} finally {
-					if (i) throw o
-				}
-			}
-			return n
-		}(e, a) || b(e, a) || function() {
-			throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")
-		}()
-	}
-
 	function g(e) {
 		return function(e) {
 			if (Array.isArray(e)) return f(e)
@@ -1038,8 +1012,7 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 			}, Ja, 0),
 			winPercentage: 0,
 			gamesPlayed: 0,
-			gamesWon: 0,
-			averageGuesses: 0
+			gamesWon: 0
 		};
 
 	function Xa() {
@@ -1052,20 +1025,13 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 			s = e.isStreak,
 			t = e.numGuesses,
 			o = Xa();
-		a ? (o.guesses[t] += 1, s ? o.currentStreak += 1 : o.currentStreak = 1) : (o.currentStreak = 0, o.guesses.fail += 1), o.maxStreak = Math.max(o.currentStreak, o.maxStreak), o.gamesPlayed += 1, o.gamesWon += a ? 1 : 0, o.winPercentage = Math.round(o.gamesWon / o.gamesPlayed * 100), o.averageGuesses = Math.round(Object.entries(o.guesses).reduce((function(e, a) {
-				var s = y(a, 2),
-					t = s[0],
-					o = s[1];
-				return t !== Ja ? e += t * o : e
-			}), 0) / o.gamesWon),
+		a ? (o.guesses[t] += 1, s ? o.currentStreak += 1 : o.currentStreak = 1) : (o.currentStreak = 0, o.guesses.fail += 1), o.maxStreak = Math.max(o.currentStreak, o.maxStreak), o.gamesPlayed += 1, o.gamesWon += a ? 1 : 0, o.winPercentage = Math.round(o.gamesWon / o.gamesPlayed * 100),
 			function(e) {
 				window.localStorage.setItem(Ya, JSON.stringify(e))
 			}(o)
 	}
 	var Ka = document.createElement("template");
-	Ka.innerHTML = "\n  <style>\n  .toaster {\n    position: absolute;\n    top: 10%;\n    left: 50%;\n    transform: translate(-50%, 0);\n    pointer-events: none;\n    width: fit-content;\n  }\n  #game-toaster {\n    z-index: ".concat(1e3, ";\n  }\n  #system-toaster {\n    z-index: ").concat(4e3, ';\n  }\n\n  #game {\n    width: 100%;\n    max-width: var(--game-max-width);\n    margin: 0 auto;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n  }\n  header {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    height: var(--header-height);\n    color: var(--color-tone-1);\n    border-bottom: 1px solid var(--color-tone-4);\n  }\n  header .title {\n    font-weight: 700;\n    font-size: 36px;\n    letter-spacing: 0.2rem;\n    text-transform: uppercase;\n    text-align: center;\n    position: absolute;\n    left: 0;\n    right: 0;\n    pointer-events: none;\n  }\n\n  @media (max-width: 360px) {\n    header .title {\n      font-size: 22px;\n      letter-spacing: 0.1rem;\n    }\n  }\n\n  #board-container {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-grow: 1;\n    overflow: hidden;\n  }\n  #board {\n    display: grid;\n    grid-template-rows: repeat(6, 1fr);\n    grid-gap: 5px;\n    padding:10px;\n    box-sizing: border-box;\n  }\n  button.icon {\n    background: none;\n    border: none;\n    cursor: pointer;\n    padding: 0 4px;\n  }\n\n  #debug-tools {\n    position: absolute;\n    bottom: 0;\n  }\n\n  </style>\n  <game-theme-manager>\n    <div id="game">\n      <header>\n        <div class="menu">\n          <button id="help-button" class="icon" aria-label="help">\n            <game-icon icon="help"></game-icon>\n          </button>\n        </div>\n        <div class="title">\n         VERBLE\n        </div>\n        <div class="menu">\n          <button id="statistics-button" class="icon" aria-label="statistics">\n            <game-icon icon="statistics"></game-icon>\n          </button>\n          <button id="settings-button" class="icon" aria-label="settings">\n            <game-icon icon="settings"></game-icon>\n          </button>\n        </div>\n      </header>\n        <div id="board-container">\n          <div id="board"></div>\n        </div>\n        <game-keyboard></game-keyboard>\n        <game-modal></game-modal>\n        <game-page></game-page>\n        <div class="toaster" id="game-toaster"></div>\n        <div class="toaster" id="system-toaster"></div>\n    </div>\n  </game-theme-manager>\n  <div id="debug-tools"></div>\n');
-	var Qa = document.createElement("template");
-	Qa.innerHTML = '\n<button id="reveal">reveal</button>\n<button id="shake">shake</button>\n<button id="bounce">bounce</button>\n<button id="toast">toast</button>\n<button id="modal">modal</button>\n';
+	Ka.innerHTML = "\n  <style>\n  .toaster {\n    position: absolute;\n    top: 10%;\n    left: 50%;\n    transform: translate(-50%, 0);\n    pointer-events: none;\n    width: fit-content;\n  }\n  #game-toaster {\n    z-index: ".concat(1e3, ";\n  }\n  #system-toaster {\n    z-index: ").concat(4e3, ';\n  }\n\n  #game {\n    width: 100%;\n    max-width: var(--game-max-width);\n    margin: 0 auto;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n  }\n  header {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    height: var(--header-height);\n    color: var(--color-tone-1);\n    border-bottom: 1px solid var(--color-tone-4);\n  }\n  header .title {\n    font-weight: 700;\n    font-size: 36px;\n    letter-spacing: 0.2rem;\n    text-transform: uppercase;\n    text-align: center;\n    position: absolute;\n    left: 0;\n    right: 0;\n    pointer-events: none;\n  }\n\n  @media (max-width: 360px) {\n    header .title {\n      font-size: 22px;\n      letter-spacing: 0.1rem;\n    }\n  }\n\n  #board-container {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-grow: 1;\n    overflow: hidden;\n  }\n  #board {\n    display: grid;\n    grid-template-rows: repeat(6, 1fr);\n    grid-gap: 5px;\n    padding:10px;\n    box-sizing: border-box;\n  }\n  button.icon {\n    background: none;\n    border: none;\n    cursor: pointer;\n    padding: 0 4px;\n  }\n\n  </style>\n  <game-theme-manager>\n    <div id="game">\n      <header>\n        <div class="menu">\n          <button id="help-button" class="icon" aria-label="help">\n            <game-icon icon="help"></game-icon>\n          </button>\n        </div>\n        <div class="title">\n         VERBLE\n        </div>\n        <div class="menu">\n          <button id="statistics-button" class="icon" aria-label="statistics">\n            <game-icon icon="statistics"></game-icon>\n          </button>\n          <button id="settings-button" class="icon" aria-label="settings">\n            <game-icon icon="settings"></game-icon>\n          </button>\n        </div>\n      </header>\n        <div id="board-container">\n          <div id="board"></div>\n        </div>\n        <game-keyboard></game-keyboard>\n        <game-modal></game-modal>\n        <game-page></game-page>\n        <div class="toaster" id="game-toaster"></div>\n        <div class="toaster" id="system-toaster"></div>\n    </div>\n  </game-theme-manager>\n');
 	var Za = "IN_PROGRESS",
 		es = "WIN",
 		as = "FAIL",
@@ -1261,27 +1227,6 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 					})), this.shadowRoot.getElementById("statistics-button").addEventListener("click", (function(a) {
 						e.showStatsModal()
 					})), window.addEventListener("resize", this.sizeBoard.bind(this))
-				}
-			}, {
-				key: "disconnectedCallback",
-				value: function() {}
-			}, {
-				key: "debugTools",
-				value: function() {
-					var e = this;
-					this.shadowRoot.getElementById("debug-tools").appendChild(Qa.content.cloneNode(!0)), this.shadowRoot.getElementById("toast").addEventListener("click", (function(a) {
-						e.addToast("hello world")
-					})), this.shadowRoot.getElementById("modal").addEventListener("click", (function(a) {
-						var s = e.$game.querySelector("game-modal");
-						s.textContent = "hello plz", s.setAttribute("open", "")
-					})), this.shadowRoot.getElementById("reveal").addEventListener("click", (function() {
-						e.evaluateRow()
-					})), this.shadowRoot.getElementById("shake").addEventListener("click", (function() {
-						e.$board.querySelectorAll("game-row")[e.rowIndex].setAttribute("invalid", "")
-					})), this.shadowRoot.getElementById("bounce").addEventListener("click", (function() {
-						var a = e.$board.querySelectorAll("game-row")[e.rowIndex - 1];
-						"" === a.getAttribute("win") ? a.removeAttribute("win") : a.setAttribute("win", "")
-					}))
 				}
 			}]), t
 		}(c(HTMLElement));
@@ -1623,9 +1568,7 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 			currentStreak: "Current Streak",
 			maxStreak: "Max Streak",
 			winPercentage: "Win %",
-			gamesPlayed: "Played",
-			gamesWon: "Won",
-			averageGuesses: "Av. Guesses"
+			gamesPlayed: "Played"
 		},
 		Os = function(e) {
 			r(t, e);
@@ -1679,12 +1622,11 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 								var a = e.evaluations,
 									s = e.dayOffset,
 									t = e.rowIndex,
-									o = e.isHardMode,
 									n = e.isWin,
 									r = JSON.parse(window.localStorage.getItem(j)),
 									i = JSON.parse(window.localStorage.getItem(S)),
 									l = "Verble ".concat(s);
-								l += " ".concat(n ? t : "X", "/").concat(6), o && (l += "");
+								l += " ".concat(n ? t : "X", "/").concat(6);
 								var d = "";
 								return a.forEach((function(e) {
 									e && (e.forEach((function(e) {
@@ -1716,7 +1658,6 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 								evaluations: e.gameApp.evaluations,
 								dayOffset: e.gameApp.dayOffset,
 								rowIndex: e.gameApp.rowIndex,
-								isHardMode: e.gameApp.hardMode,
 								isWin: e.gameApp.gameStatus === es
 							}), (function() {
 								e.gameApp.addToast("Copied results to clipboard", 2e3, !0)
@@ -1766,7 +1707,7 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 	}(c(HTMLElement));
 	customElements.define("game-switch", Ps);
 	var $s = document.createElement("template");
-	$s.innerHTML = '\n  <style>\n  .instructions {\n    font-size: 14px;\n    color: var(--color-tone-1)\n  }\n\n  .examples {\n    border-bottom: 1px solid var(--color-tone-4);\n    border-top: 1px solid var(--color-tone-4);\n  }\n\n  .example {\n    margin-top: 24px;\n    margin-bottom: 24px;\n  }\n\n  game-tile {\n    width: 40px;\n    height: 40px;\n  }\n\n  :host([page]) section {\n    padding: 16px;\n    padding-top: 0px;\n  }\n\n  </style>\n  <section>\n    <div class="instructions">\n      <p>Guess the <strong>VERBLE</strong> in 6 tries.</p>\n      <p>Each guess must be a valid 5 letter word. Hit the enter button to submit.</p>\n      <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>\n      <div class="examples">\n        <p><strong>Examples</strong></p>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="w" evaluation="correct" reveal></game-tile>\n            <game-tile letter="e"></game-tile>\n            <game-tile letter="a"></game-tile>\n            <game-tile letter="r"></game-tile>\n            <game-tile letter="y"></game-tile>\n          </div>\n          <p>The letter <strong>W</strong> is in the word and in the correct spot.</p>\n        </div>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="p"></game-tile>\n            <game-tile letter="i" evaluation="present" reveal></game-tile>\n            <game-tile letter="l"></game-tile>\n            <game-tile letter="l"></game-tile>\n            <game-tile letter="s"></game-tile>\n          </div>\n          <p>The letter <strong>I</strong> is in the word but in the wrong spot.</p>\n        </div>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="v"></game-tile>\n            <game-tile letter="a"></game-tile>\n            <game-tile letter="g"></game-tile>\n            <game-tile letter="u" evaluation="absent" reveal></game-tile>\n            <game-tile letter="e"></game-tile>\n          </div>\n          <p>The letter <strong>U</strong> is not in the word in any spot.</p>\n        </div>\n      </div>\n      <p><strong>A new VERBLE will be available each day!<strong></p>\n    </div>\n  </section>\n';
+	$s.innerHTML = '\n  <style>\n  .instructions {\n    font-size: 14px;\n    color: var(--color-tone-1)\n  }\n\n  .examples {\n    border-bottom: 1px solid var(--color-tone-4);\n    border-top: 1px solid var(--color-tone-4);\n  }\n\n  .example {\n    margin-top: 24px;\n    margin-bottom: 24px;\n  }\n\n  game-tile {\n    width: 40px;\n    height: 40px;\n  }\n\n  :host([page]) section {\n    padding: 16px;\n    padding-top: 0px;\n  }\n\n  </style>\n  <section>\n    <div class="instructions">\n      <p>Guess the <strong>VERBLE</strong> in 6 tries.</p>\n      <p>Each guess must be a valid 5 letter word. Hit the enter button to submit.</p>\n      <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>\n      <div class="examples">\n        <p><strong>Examples</strong></p>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="w" evaluation="correct" reveal></game-tile>\n            <game-tile letter="e"></game-tile>\n            <game-tile letter="a"></game-tile>\n            <game-tile letter="r"></game-tile>\n            <game-tile letter="y"></game-tile>\n          </div>\n          <p>The letter <strong>W</strong> is in the word and in the correct spot.</p>\n        </div>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="p"></game-tile>\n            <game-tile letter="i" evaluation="present" reveal></game-tile>\n            <game-tile letter="l"></game-tile>\n            <game-tile letter="l"></game-tile>\n            <game-tile letter="s"></game-tile>\n          </div>\n          <p>The letter <strong>I</strong> is in the word but in the wrong spot.</p>\n        </div>\n        <div class="example">\n          <div class="row">\n            <game-tile letter="v"></game-tile>\n            <game-tile letter="a"></game-tile>\n            <game-tile letter="g"></game-tile>\n            <game-tile letter="u" evaluation="absent" reveal></game-tile>\n            <game-tile letter="e"></game-tile>\n          </div>\n          <p>The letter <strong>U</strong> is not in the word in any spot.</p>\n        </div>\n      </div>\n      <p><strong>A new VERBLE will be available each day!</strong></p>\n    </div>\n  </section>\n';
 	var Hs = function(e) {
 		r(t, e);
 		var a = h(t);
