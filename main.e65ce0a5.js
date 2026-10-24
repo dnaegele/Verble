@@ -981,9 +981,33 @@ this.verble = this.verble || {}, this.verble.bundle = function(e) {
 		return Math.round(t / 864e5)
 	}
 
+	// Days before 19 Oct 2027 use La as-is; each later pass through the list uses its own shuffled order.
+	var solutionOrders = {};
+
+	function shuffledSolutions(cycle) {
+		if (!solutionOrders[cycle]) {
+			var seed = cycle,
+				words = La.slice(),
+				random = function() {
+					var t = seed = seed + 1831565813 | 0;
+					t = Math.imul(t ^ t >>> 15, t | 1);
+					t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+					return ((t ^ t >>> 14) >>> 0) / 4294967296
+				};
+			for (var i = words.length - 1; i > 0; i--) {
+				var j = Math.floor(random() * (i + 1)),
+					w = words[i];
+				words[i] = words[j], words[j] = w
+			}
+			solutionOrders[cycle] = words
+		}
+		return solutionOrders[cycle]
+	}
+
 	function Da(e) {
-		var a, s = Ga(e);
-		return a = s % La.length, La[a]
+		var s = Ga(e),
+			cycle = Math.floor(s / La.length);
+		return cycle > 0 ? shuffledSolutions(cycle)[s % La.length] : La[s % La.length]
 	}
 
 	function Ga(e) {
